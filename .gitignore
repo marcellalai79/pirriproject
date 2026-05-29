@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+.project
+
+# Logs
+*.log
+
+# Node (if you add npm packages)
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
