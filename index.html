@@ -175,6 +175,32 @@ button{cursor:pointer;font-family:var(--sans)}
 .price-amt{font-size:3rem;font-weight:300;color:var(--deep);line-height:1}
 .price-note{font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--stone);margin-bottom:2rem}
 
+.btn-buy{
+  width:100%;padding:1.1rem;
+  background:var(--terra);color:white;border:none;
+  font-family:var(--sans);font-weight:300;font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;
+  cursor:pointer;transition:background .25s, transform .12s;margin-top:0;
+}
+.btn-buy:hover{background:var(--accent);transform:translateY(-1px)}
+.btn-buy:active{transform:translateY(0)}
+
+/* MODAL STYLES */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1000;
+}
+.modal-overlay.open{display:flex}
+.modal-content{
+  background:var(--light);padding:3rem;max-width:500px;width:90%;
+  max-height:90vh;overflow-y:auto;position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.modal-close{
+  position:absolute;top:1.5rem;right:1.5rem;
+  background:transparent;border:none;font-size:1.8rem;color:var(--stone);cursor:pointer;
+  font-family:var(--sans);transition:color .25s;
+}
+.modal-close:hover{color:var(--terra)}
+
 .steps-bar{display:flex;align-items:center;gap:0;margin-bottom:2rem;border-bottom:1px solid var(--muted);padding-bottom:1rem}
 .step-item{flex:1;text-align:center;font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);position:relative;padding:.3rem 0;transition:color .3s}
 .step-item.done{color:var(--terra)}
@@ -199,14 +225,6 @@ button{cursor:pointer;font-family:var(--sans)}
   font-family:var(--sans);font-weight:300;font-size:.45rem;letter-spacing:.08em;
   padding:.25rem .5rem;border-radius:2px;
 }
-.btn-buy{
-  width:100%;padding:1.1rem;
-  background:var(--terra);color:white;border:none;
-  font-family:var(--sans);font-weight:300;font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;
-  cursor:pointer;transition:background .25s, transform .12s;margin-top:.5rem;
-}
-.btn-buy:hover:not(:disabled){background:var(--accent);transform:translateY(-1px)}
-.btn-buy:disabled{background:var(--stone);cursor:not-allowed}
 .btn-sec{
   width:100%;padding:.9rem;margin-top:.5rem;
   background:transparent;color:var(--stone);
@@ -263,6 +281,7 @@ footer{
   .ch-grid{grid-template-columns:1fr}
   footer{flex-direction:column;gap:2rem}
   .footer-r{text-align:left}
+  .modal-content{padding:2rem}
 }
 </style>
 </head>
@@ -295,7 +314,6 @@ function ArchSVG(){
     E('rect',{key:'wl2',x:150,y:130,width:50,height:65,fill:'#b0c8d8',opacity:.75}),
     E('rect',{key:'wr1',x:400,y:130,width:50,height:65,fill:'#b0c8d8',opacity:.75}),
     E('rect',{key:'wr2',x:470,y:130,width:50,height:65,fill:'#b0c8d8',opacity:.75}),
-    E('rect',{key:'corn',x:60,y:97,width:480,height:8,fill:'#d8c4a0'}),
   ])
 }
 
@@ -332,7 +350,7 @@ function Gallery(){
   )
 }
 
-function CheckoutForm({onSuccess}){
+function CheckoutForm({onSuccess,onClose}){
   const [step,setStep]=useState(0)
   const [form,setForm]=useState({fname:'',lname:'',email:'',addr:'',cardnum:'',expiry:'',cvv:''})
   const [errors,setErrors]=useState({})
@@ -425,13 +443,14 @@ function CheckoutForm({onSuccess}){
     ]),
     E('div',{key:'actions'},[
       E('button',{key:'nxt',className:'btn-buy',onClick:next},step===2?'Conferma e Paga — €18':step===0?'Continua →':'Avanti →'),
-      step>0&&E('button',{key:'bck',className:'btn-sec',onClick:back},'← Indietro'),
+      E('button',{key:'bck',className:'btn-sec',onClick:()=>{setStep(0);onClose&&onClose()}},'Annulla'),
     ]),
   ])
 }
 
 function App(){
   const [purchased,setPurchased]=useState(false)
+  const [modalOpen,setModalOpen]=useState(false)
   const shopRef=useRef(null)
 
   const CHDARK=[
@@ -465,7 +484,7 @@ function App(){
         ]),
         E('p',{key:'sub',className:'hero-sub'},'Bellezze d\'architettura e d\'arte'),
         E('p',{key:'auth',className:'hero-authors'},'Maria Rosaria Lai — Marcella Lai'),
-        E('button',{key:'cta',className:'hero-cta',onClick:()=>shopRef.current?.scrollIntoView({behavior:'smooth'})},'⬇  Acquista — €18'),
+        E('button',{key:'cta',className:'hero-cta',onClick:()=>{shopRef.current?.scrollIntoView({behavior:'smooth'});setTimeout(()=>setModalOpen(true),300)}},'⬇  Acquista — €18'),
       ]),
       E('div',{key:'r',className:'hero-r'},[
         E('div',{key:'top',className:'hero-img',style:{flex:'62%'}},E(ArchSVG)),
@@ -565,8 +584,18 @@ function App(){
             ]),
             E('p',{key:'pn',className:'price-note'},'Edizione digitale PDF'),
           ]),
-          E(CheckoutForm,{key:'form',onSuccess:()=>setPurchased(true)}),
+          E('button',{key:'buybtn',className:'btn-buy',onClick:()=>setModalOpen(true)},'Acquista Ora — €18,00'),
+          E('p',{key:'sec',className:'secure-note'},'🔒 Pagamento sicuro SSL'),
         ]),
+      ]),
+    ]),
+
+    // MODAL
+    E('div',{key:'modal',className:'modal-overlay'+(modalOpen?' open':''),onClick:e=>e.target===e.currentTarget&&setModalOpen(false)},[
+      E('div',{key:'content',className:'modal-content'},[
+        E('button',{key:'close',className:'modal-close',onClick:()=>setModalOpen(false)},'✕'),
+        E('h2',{key:'title',style:{fontSize:'1.6rem',fontWeight:300,marginBottom:'1.5rem',color:'var(--deep)'}},'Acquista il Libro'),
+        E(CheckoutForm,{key:'form',onSuccess:()=>{setPurchased(true);setTimeout(()=>setModalOpen(false),3000)},onClose:()=>setModalOpen(false)}),
       ]),
     ]),
 
