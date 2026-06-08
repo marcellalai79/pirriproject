@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innamorarsi di Pirri — Bellezze d'architettura e d'arte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sand:#f5efe6;--terra:#b8622a;--deep:#1e1810;--stone:#7a6a58;
+  --muted:#c8b8a4;--light:#faf7f3;--accent:#8c3d14;--sky:#b0c8d8;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Josefin Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--serif);background:var(--light);color:var(--deep);overflow-x:hidden;font-size:16px}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--sans)}
+
+.site{min-height:100vh;display:flex;flex-direction:column}
+
+.nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(250,247,243,0.96);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--muted);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 2.5rem;
+}
+.nav-logo{font-family:var(--sans);font-weight:200;font-size:.65rem;letter-spacing:.4em;text-transform:uppercase;color:var(--stone)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a,.nav-tab{font-family:var(--sans);font-weight:300;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--deep);cursor:pointer;background:none;border:none;padding:0;transition:color .25s}
+.nav-links a:hover,.nav-tab:hover,.nav-tab.active{color:var(--terra)}
+.nav-right{display:flex;align-items:center;gap:1.5rem}
+.cart-btn{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:var(--sans);font-weight:300;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;
+  background:var(--terra);color:white;border:none;
+  padding:.55rem 1.2rem;cursor:pointer;transition:background .25s;
+}
+.cart-btn:hover{background:var(--accent)}
+.cart-badge{
+  background:white;color:var(--terra);
+  border-radius:50%;width:16px;height:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.5rem;font-weight:400;
+}
+
+.label{
+  font-family:var(--sans);font-weight:200;font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;
+  color:var(--terra);display:flex;align-items:center;gap:.8rem;margin-bottom:2rem;
+}
+.label::before{content:'';width:30px;height:1px;background:var(--terra)}
+
+.hero{
+  display:grid;grid-template-columns:1fr 1fr;min-height:88vh;
+}
+.hero-l{
+  background:var(--deep);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:4rem 3.5rem;position:relative;overflow:hidden;
+}
+.hero-l::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 60px),
+             repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 60px);
+}
+.hero-eyebrow{font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.5em;text-transform:uppercase;color:var(--terra);margin-bottom:1.2rem;position:relative}
+.hero-title{font-size:clamp(2.8rem,5vw,5rem);font-weight:300;line-height:1.05;color:var(--sand);position:relative;margin-bottom:.8rem}
+.hero-title em{font-style:italic;color:var(--terra);display:block}
+.hero-sub{font-size:1rem;font-style:italic;color:var(--muted);position:relative;margin-bottom:2.5rem;letter-spacing:.05em}
+.hero-authors{font-family:var(--sans);font-weight:200;font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--stone);position:relative}
+.hero-r{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:2px}
+.hero-img{flex:1;overflow:hidden;position:relative}
+.hero-r-bot{display:grid;grid-template-columns:1fr 1fr;gap:2px;height:38%}
+.hero-img-sm{overflow:hidden;position:relative}
+.hero-cta{
+  position:relative;margin-top:2.5rem;
+  display:inline-flex;align-items:center;gap:.8rem;
+  font-family:var(--sans);font-weight:300;font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;
+  color:white;background:var(--terra);border:none;padding:1rem 2rem;cursor:pointer;transition:background .25s;width:fit-content;
+}
+.hero-cta:hover{background:var(--accent)}
+
+.about{padding:5rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1200px;margin:0 auto;width:100%}
+.about-text h2{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;line-height:1.2;margin-bottom:1.5rem}
+.about-text h2 em{font-style:italic;color:var(--terra)}
+.about-text p{font-size:1rem;font-weight:300;line-height:1.85;color:var(--stone);margin-bottom:1.2rem}
+.book-3d{
+  width:100%;aspect-ratio:1;background:var(--deep);
+  position:relative;box-shadow:24px 24px 60px rgba(30,24,16,.35);
+  display:flex;align-items:center;justify-content:center;
+}
+.book-3d::before{
+  content:'';position:absolute;left:-5px;top:4px;bottom:4px;width:10px;
+  background:linear-gradient(to right,#0a0804,#2a2010);
+}
+.book-inner{
+  width:calc(100% - 10px);height:calc(100% - 10px);
+  background:linear-gradient(150deg,#252012,#1a1408);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:2rem;position:relative;overflow:hidden;
+}
+.book-art{position:absolute;inset:0;opacity:.6}
+.book-cover-title{position:relative;font-size:1.2rem;font-weight:300;color:var(--sand);line-height:1.2;margin-bottom:.4rem}
+.book-cover-sub{position:relative;font-family:var(--sans);font-weight:200;font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--terra)}
+
+.chapters{background:var(--sand);padding:5rem 2.5rem}
+.chapters-inner{max-width:1200px;margin:0 auto}
+.ch-hd{text-align:center;max-width:560px;margin:0 auto 3.5rem}
+.ch-hd h2{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;margin-bottom:.8rem}
+.ch-hd p{font-size:.95rem;font-style:italic;color:var(--stone);line-height:1.7}
+.ch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.ch-card{
+  background:var(--deep);padding:2.5rem 2rem;position:relative;overflow:hidden;
+  transition:background .35s;
+}
+.ch-card:hover{background:#2e2418}
+.ch-card.accent{background:var(--terra)}
+.ch-card.accent:hover{background:#a5531f}
+.ch-card.accent .ch-title,.ch-card.accent .ch-desc{color:rgba(255,255,255,.88)}
+.ch-card.accent .ch-num{color:rgba(255,255,255,.5)}
+.ch-bg-num{
+  position:absolute;top:-1rem;right:.8rem;font-size:5rem;font-weight:300;
+  font-style:italic;color:rgba(196,121,74,.08);line-height:1;pointer-events:none;
+}
+.ch-num{font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;color:var(--terra);margin-bottom:.8rem}
+.ch-title{font-size:1.25rem;font-weight:300;color:var(--sand);line-height:1.3;margin-bottom:.8rem}
+.ch-desc{font-size:.85rem;font-style:italic;color:var(--stone);line-height:1.6}
+
+.authors-sec{padding:5rem 2.5rem;max-width:1100px;margin:0 auto;width:100%}
+.authors-grid{display:grid;grid-template-columns:1fr 1px 1fr;gap:3.5rem;align-items:start;margin-top:3rem}
+.auth-divider{background:var(--muted)}
+.auth-role{font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:var(--terra);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.auth-role::before{content:'';width:16px;height:1px;background:var(--terra)}
+.auth-avatar{
+  width:68px;height:68px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;font-style:italic;font-weight:300;color:var(--sand);margin-bottom:1.2rem;
+}
+.av1{background:linear-gradient(135deg,var(--deep),#3a2e18)}
+.av2{background:linear-gradient(135deg,var(--terra),#7a3510)}
+.auth-name{font-size:1.5rem;font-weight:300;margin-bottom:.8rem;color:var(--deep)}
+.auth-bio{font-size:.95rem;font-weight:300;line-height:1.8;color:var(--stone);font-style:italic}
+
+.gallery-wrap{background:var(--deep);overflow:hidden;height:190px;position:relative}
+.gallery-track{display:flex;gap:3px;animation:scrollGal 22s linear infinite;width:max-content;height:100%}
+.gallery-track:hover{animation-play-state:paused}
+@keyframes scrollGal{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.gal-tile{width:260px;height:100%;flex-shrink:0;position:relative;overflow:hidden}
+.gal-cap{
+  position:absolute;bottom:0;left:0;right:0;padding:.6rem .8rem;
+  background:linear-gradient(to top,rgba(30,24,16,.85),transparent);
+  font-family:var(--sans);font-weight:200;font-size:.5rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);
+  opacity:0;transition:opacity .3s;
+}
+.gal-tile:hover .gal-cap{opacity:1}
+
+.shop-sec{padding:5rem 2.5rem;background:linear-gradient(155deg,var(--deep) 0%,#302818 100%);position:relative}
+.shop-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 50%,rgba(184,98,42,.1) 0,transparent 60%)}
+.shop-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative}
+.shop-left h2{font-size:clamp(2rem,3.5vw,3.5rem);font-weight:300;color:var(--sand);line-height:1.15;margin-bottom:1.2rem}
+.shop-left h2 em{font-style:italic;color:var(--terra)}
+.shop-desc{font-size:.95rem;font-weight:300;color:var(--muted);line-height:1.8;font-style:italic;margin-bottom:1.8rem}
+.shop-feats{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:2.5rem}
+.shop-feats li{font-family:var(--sans);font-weight:200;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);display:flex;align-items:center;gap:.7rem}
+.shop-feats li::before{content:'✦';color:var(--terra);font-size:.45rem}
+.shop-card{background:var(--light);padding:2.5rem;box-shadow:0 32px 64px rgba(0,0,0,.45)}
+
+.price-row{display:flex;align-items:baseline;gap:.4rem;margin-bottom:.3rem}
+.price-curr{font-size:1.3rem;font-weight:300;color:var(--stone)}
+.price-amt{font-size:3rem;font-weight:300;color:var(--deep);line-height:1}
+.price-note{font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--stone);margin-bottom:2rem}
+
+.steps-bar{display:flex;align-items:center;gap:0;margin-bottom:2rem;border-bottom:1px solid var(--muted);padding-bottom:1rem}
+.step-item{flex:1;text-align:center;font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);position:relative;padding:.3rem 0;transition:color .3s}
+.step-item.done{color:var(--terra)}
+.step-item.active{color:var(--deep)}
+.step-item.active::after{content:'';position:absolute;bottom:-1rem;left:0;right:0;height:2px;background:var(--terra)}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid currentColor;font-size:.5rem;margin-right:.4rem}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.form-full{grid-column:1/-1}
+.form-field{display:flex;flex-direction:column;gap:.35rem}
+.form-label{font-family:var(--sans);font-weight:300;font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--stone)}
+.form-input{
+  width:100%;padding:.65rem .9rem;border:1px solid var(--muted);background:white;
+  font-family:var(--serif);font-size:.95rem;color:var(--deep);outline:none;
+  transition:border-color .25s;border-radius:1px;
+}
+.form-input:focus{border-color:var(--terra)}
+.form-input.err{border-color:#c0392b}
+.card-icons{display:flex;gap:.4rem;margin-top:-.3rem}
+.ci{
+  background:var(--deep);color:var(--sand);
+  font-family:var(--sans);font-weight:300;font-size:.45rem;letter-spacing:.08em;
+  padding:.25rem .5rem;border-radius:2px;
+}
+.btn-buy{
+  width:100%;padding:1.1rem;
+  background:var(--terra);color:white;border:none;
+  font-family:var(--sans);font-weight:300;font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;
+  cursor:pointer;transition:background .25s, transform .12s;margin-top:.5rem;
+}
+.btn-buy:hover:not(:disabled){background:var(--accent);transform:translateY(-1px)}
+.btn-buy:disabled{background:var(--stone);cursor:not-allowed}
+.btn-sec{
+  width:100%;padding:.9rem;margin-top:.5rem;
+  background:transparent;color:var(--stone);
+  border:1px solid var(--muted);
+  font-family:var(--sans);font-weight:300;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;
+  cursor:pointer;transition:all .25s;
+}
+.btn-sec:hover{border-color:var(--terra);color:var(--terra)}
+.secure-note{text-align:center;margin-top:.8rem;font-family:var(--sans);font-weight:200;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+.order-summ{background:var(--sand);padding:1.2rem;margin-bottom:1.5rem;border:1px solid var(--muted)}
+.summ-row{display:flex;justify-content:space-between;align-items:center;padding:.35rem 0;font-size:.9rem;color:var(--stone)}
+.summ-row.total{border-top:1px solid var(--muted);margin-top:.4rem;padding-top:.7rem;font-weight:600;font-size:1.1rem;color:var(--deep)}
+
+.success-box{text-align:center;padding:1.5rem 0}
+.success-icon{font-size:2.5rem;margin-bottom:.8rem}
+.success-box h3{font-size:1.7rem;font-weight:300;color:var(--deep);margin-bottom:.6rem}
+.success-box p{font-style:italic;color:var(--stone);font-size:.95rem;line-height:1.7;margin-bottom:1.5rem}
+.btn-dl{
+  display:inline-flex;align-items:center;gap:.7rem;
+  padding:.9rem 2.2rem;background:var(--deep);color:var(--sand);
+  border:none;font-family:var(--sans);font-weight:300;font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;
+  cursor:pointer;transition:background .25s;
+}
+.btn-dl:hover{background:#2e2418}
+
+.processing{text-align:center;padding:2.5rem 0}
+.spinner{
+  width:36px;height:36px;border:2px solid var(--muted);border-top-color:var(--terra);
+  border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.proc-txt{font-family:var(--sans);font-weight:200;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--stone)}
+
+.review-item{display:flex;justify-content:space-between;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid var(--muted)}
+.review-key{font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+.review-val{font-size:.9rem;color:var(--deep);text-align:right}
+
+footer{
+  background:var(--deep);color:var(--stone);
+  padding:2.5rem;display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:1rem;
+}
+.footer-l{font-family:var(--sans);font-weight:200;font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;line-height:2.2}
+.footer-r{font-size:.85rem;font-style:italic;text-align:right;line-height:1.9}
+.footer-logo{color:var(--sand);font-size:.85rem;font-style:italic;margin-bottom:.2rem}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr}
+  .shop-inner{grid-template-columns:1fr}
+  .authors-grid{grid-template-columns:1fr}
+  .auth-divider{display:none}
+  .ch-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:2rem}
+  .footer-r{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script>
+const {useState,useEffect,useRef,useCallback}=React;
+const E=React.createElement;
+
+function Label({children,light}){
+  return E('div',{className:'label',style:light?{color:'rgba(200,184,164,.7)'}:{}},[E('span',{key:'t'},children)])
+}
+
+function ArchSVG(){
+  return E('svg',{viewBox:'0 0 600 380',xmlns:'http://www.w3.org/2000/svg',style:{width:'100%',height:'100%',position:'absolute',inset:0}},[
+    E('rect',{key:'sky',width:600,height:380,fill:'#b0c8d8'}),
+    E('rect',{key:'gr',x:0,y:290,width:600,height:90,fill:'#2a4a1a'}),
+    E('rect',{key:'w',x:60,y:100,width:480,height:195,fill:'#c4794a'}),
+    E('rect',{key:'cp',x:200,y:60,width:200,height:235,fill:'#b05a30'}),
+    E('polygon',{key:'ped',points:'200,60 300,10 400,60',fill:'#d8c8b0'}),
+    E('rect',{key:'c1',x:220,y:80,width:12,height:195,fill:'#c8b89a'}),
+    E('rect',{key:'c2',x:260,y:80,width:12,height:195,fill:'#c8b89a'}),
+    E('rect',{key:'c3',x:328,y:80,width:12,height:195,fill:'#c8b89a'}),
+    E('rect',{key:'c4',x:368,y:80,width:12,height:195,fill:'#c8b89a'}),
+    E('rect',{key:'arch',x:260,y:195,width:80,height:100,fill:'#1a1210'}),
+    E('path',{key:'archp',d:'M260 195 Q300 148 340 195',fill:'#1a1210'}),
+    E('rect',{key:'wl1',x:80,y:130,width:50,height:65,fill:'#b0c8d8',opacity:.75}),
+    E('rect',{key:'wl2',x:150,y:130,width:50,height:65,fill:'#b0c8d8',opacity:.75}),
+    E('rect',{key:'wr1',x:400,y:130,width:50,height:65,fill:'#b0c8d8',opacity:.75}),
+    E('rect',{key:'wr2',x:470,y:130,width:50,height:65,fill:'#b0c8d8',opacity:.75}),
+    E('rect',{key:'corn',x:60,y:97,width:480,height:8,fill:'#d8c4a0'}),
+  ])
+}
+
+function DoorSVG(){
+  return E('svg',{viewBox:'0 0 260 190',xmlns:'http://www.w3.org/2000/svg',style:{width:'100%',height:'100%',position:'absolute',inset:0}},[
+    E('rect',{key:'bg',width:260,height:190,fill:'#c8a888'}),
+    E('rect',{key:'w',x:15,y:8,width:230,height:182,fill:'#d4bfa0'}),
+    E('rect',{key:'d',x:90,y:65,width:80,height:125,fill:'#2a1a0a'}),
+    E('path',{key:'a',d:'M90 65 Q130 20 170 65',fill:'#2a1a0a'}),
+  ])
+}
+
+function ChurchSVG(){
+  return E('svg',{viewBox:'0 0 260 190',xmlns:'http://www.w3.org/2000/svg',style:{width:'100%',height:'100%',position:'absolute',inset:0}},[
+    E('rect',{key:'bg',width:260,height:190,fill:'#e8e0d4'}),
+    E('path',{key:'v1',d:'M130 0 Q0 90 0 190',fill:'none',stroke:'#c4a870',strokeWidth:2.5}),
+    E('path',{key:'v2',d:'M130 0 Q260 90 260 190',fill:'none',stroke:'#c4a870',strokeWidth:2.5}),
+  ])
+}
+
+const TILES=[
+  {C:ArchSVG,cap:'Villa Zapata'},{C:DoorSVG,cap:'Casa Saddi'},{C:ChurchSVG,cap:'San Pietro'},
+  {C:ArchSVG,cap:'Villa Zapata'},{C:DoorSVG,cap:'Casa Saddi'},{C:ChurchSVG,cap:'San Pietro'},
+]
+
+function Gallery(){
+  return E('div',{className:'gallery-wrap'},
+    E('div',{className:'gallery-track'},
+      TILES.map((t,i)=>E('div',{key:i,className:'gal-tile'},[
+        E(t.C,{key:'s'}),
+        E('div',{key:'c',className:'gal-cap'},t.cap)
+      ]))
+    )
+  )
+}
+
+function CheckoutForm({onSuccess}){
+  const [step,setStep]=useState(0)
+  const [form,setForm]=useState({fname:'',lname:'',email:'',addr:'',cardnum:'',expiry:'',cvv:''})
+  const [errors,setErrors]=useState({})
+
+  function upd(k){return e=>setForm(f=>({...f,[k]:e.target.value}))}
+  function updFmt(k,fn){return e=>setForm(f=>({...f,[k]:fn(e.target.value)}))}
+
+  function validateStep0(){
+    let e={}
+    if(!form.fname.trim())e.fname=true
+    if(!form.lname.trim())e.lname=true
+    if(!form.email.includes('@'))e.email=true
+    setErrors(e)
+    return Object.keys(e).length===0
+  }
+  function validateStep1(){
+    let e={}
+    if(form.cardnum.replace(/\s/g,'').length<16)e.cardnum=true
+    if(form.expiry.replace(/\s/g,'').replace('/','').length<4)e.expiry=true
+    if(form.cvv.length<3)e.cvv=true
+    setErrors(e)
+    return Object.keys(e).length===0
+  }
+  function next(){
+    setErrors({})
+    if(step===0&&!validateStep0())return
+    if(step===1&&!validateStep1())return
+    if(step===2){
+      setStep(3)
+      setTimeout(()=>{setStep(4);onSuccess&&onSuccess()},2200)
+      return
+    }
+    setStep(s=>s+1)
+  }
+  function back(){setStep(s=>Math.max(0,s-1));setErrors({})}
+
+  const STEPS=['Dati','Pagamento','Riepilogo']
+
+  if(step===3) return E('div',{className:'processing'},[
+    E('div',{key:'sp',className:'spinner'}),
+    E('p',{key:'t',className:'proc-txt'},'Elaborazione pagamento…')
+  ])
+
+  if(step===4) return E('div',{className:'success-box'},[
+    E('div',{key:'i',className:'success-icon'},'✦'),
+    E('h3',{key:'h'},'Grazie per il tuo acquisto!'),
+    E('p',{key:'p'},'Il pagamento è stato elaborato.\nIl link è stato inviato a '+form.email+'.'),
+    E('button',{key:'b',className:'btn-dl',onClick:()=>{}},'⬇  Scarica il PDF')
+  ])
+
+  return E('div',{},[
+    E('div',{key:'steps',className:'steps-bar'},
+      STEPS.map((s,i)=>E('div',{key:i,className:'step-item'+(step===i?' active':step>i?' done':'')},
+        [E('span',{key:'n',className:'step-num'},i+1),s]
+      ))
+    ),
+    step===0&&E('div',{key:'s0',className:'form-grid'},[
+      E('div',{key:'fn',className:'form-field'},[
+        E('label',{key:'l',className:'form-label'},'Nome'),
+        E('input',{key:'i',className:'form-input'+(errors.fname?' err':''),value:form.fname,onChange:upd('fname'),placeholder:'Maria'})
+      ]),
+      E('div',{key:'ln',className:'form-field'},[
+        E('label',{key:'l',className:'form-label'},'Cognome'),
+        E('input',{key:'i',className:'form-input'+(errors.lname?' err':''),value:form.lname,onChange:upd('lname'),placeholder:'Rossi'})
+      ]),
+      E('div',{key:'em',className:'form-field form-full'},[
+        E('label',{key:'l',className:'form-label'},'Email'),
+        E('input',{key:'i',type:'email',className:'form-input'+(errors.email?' err':''),value:form.email,onChange:upd('email'),placeholder:'nome@esempio.it'})
+      ]),
+    ]),
+    step===1&&E('div',{key:'s1',className:'form-grid'},[
+      E('div',{key:'cn',className:'form-field form-full'},[
+        E('label',{key:'l',className:'form-label'},'Numero di carta'),
+        E('input',{key:'i',className:'form-input'+(errors.cardnum?' err':''),value:form.cardnum,onChange:updFmt('cardnum',v=>v.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim()),placeholder:'1234 5678 9012 3456'}),
+      ]),
+      E('div',{key:'ex',className:'form-field'},[
+        E('label',{key:'l',className:'form-label'},'Scadenza'),
+        E('input',{key:'i',className:'form-input'+(errors.expiry?' err':''),value:form.expiry,onChange:updFmt('expiry',v=>{let d=v.replace(/\D/g,'').slice(0,4);return d.length>=2?d.slice(0,2)+' / '+d.slice(2):d}),placeholder:'MM / AA'})
+      ]),
+      E('div',{key:'cv',className:'form-field'},[
+        E('label',{key:'l',className:'form-label'},'CVV'),
+        E('input',{key:'i',className:'form-input'+(errors.cvv?' err':''),value:form.cvv,onChange:e=>setForm(f=>({...f,cvv:e.target.value.replace(/\D/g,'').slice(0,4)})),placeholder:'123',type:'password'})
+      ]),
+    ]),
+    step===2&&E('div',{key:'s2'},[
+      E('div',{key:'os',className:'order-summ'},[
+        E('div',{key:'p',className:'summ-row'},[E('span',{key:'k'},'Prodotto'),E('span',{key:'v'},'Innamorarsi di Pirri PDF')]),
+        E('div',{key:'t',className:'summ-row total'},[E('span',{key:'k'},'Totale'),E('span',{key:'v'},'€18,00')]),
+      ]),
+    ]),
+    E('div',{key:'actions'},[
+      E('button',{key:'nxt',className:'btn-buy',onClick:next},step===2?'Conferma e Paga — €18':step===0?'Continua →':'Avanti →'),
+      step>0&&E('button',{key:'bck',className:'btn-sec',onClick:back},'← Indietro'),
+    ]),
+  ])
+}
+
+function App(){
+  const [purchased,setPurchased]=useState(false)
+  const shopRef=useRef(null)
+
+  const CHDARK=[
+    {n:'I',title:"L'Antica Periferia",desc:'Case di campagna e proprietà ecclesiastiche.'},
+    {n:'II',title:'Il Centro Storico',desc:'Architettura rurale campidanese.',accent:true},
+    {n:'III',title:'Arte Sacra',desc:'Chiese e tradizioni religiose.'},
+    {n:'IV',title:'Il Novecento',desc:"Architettura liberty e palazzi borghesi."},
+  ]
+
+  return E('div',{className:'site'},[
+    E('nav',{key:'nav'},[
+      E('div',{key:'logo',className:'nav-logo'},'Innamorarsi di Pirri'),
+      E('ul',{key:'links',className:'nav-links'},[
+        E('li',{key:'a'},E('span',{className:'nav-tab'},'Il Libro')),
+        E('li',{key:'b'},E('span',{className:'nav-tab'},'Autrici')),
+        E('li',{key:'c'},E('span',{className:'nav-tab',onClick:()=>shopRef.current?.scrollIntoView({behavior:'smooth'})},'Acquista')),
+      ]),
+      E('div',{key:'r',className:'nav-right'},[
+        E('button',{key:'cart',className:'cart-btn'},[
+          '⬇ Acquista',
+          purchased&&E('span',{key:'b',className:'cart-badge'},'✓')
+        ]),
+      ]),
+    ]),
+
+    E('section',{key:'hero',className:'hero'},[
+      E('div',{key:'l',className:'hero-l'},[
+        E('p',{key:'ey',className:'hero-eyebrow'},'Collana della Memoria · 2020'),
+        E('h1',{key:'t',className:'hero-title'},[
+          'Innamorarsi',E('em',{key:'em'},'di Pirri')
+        ]),
+        E('p',{key:'sub',className:'hero-sub'},'Bellezze d\'architettura e d\'arte'),
+        E('p',{key:'auth',className:'hero-authors'},'Maria Rosaria Lai — Marcella Lai'),
+        E('button',{key:'cta',className:'hero-cta',onClick:()=>shopRef.current?.scrollIntoView({behavior:'smooth'})},'⬇  Acquista — €18'),
+      ]),
+      E('div',{key:'r',className:'hero-r'},[
+        E('div',{key:'top',className:'hero-img',style:{flex:'62%'}},E(ArchSVG)),
+        E('div',{key:'bot',className:'hero-r-bot'},[
+          E('div',{key:'l',className:'hero-img-sm'},E(DoorSVG)),
+          E('div',{key:'r',className:'hero-img-sm'},E(ChurchSVG)),
+        ]),
+      ]),
+    ]),
+
+    E('div',{key:'about',style:{background:'var(--light)'}},[
+      E('div',{className:'about'},[
+        E('div',{key:'txt'},[
+          E(Label,{key:'lb'},'Il Libro'),
+          E('h2',{key:'h'},[
+            'Un viaggio nel cuore ',E('em',{key:'em'},'storico'),
+            ' di Pirri'
+          ]),
+          E('p',{key:'p1'},'«Innamorarsi di Pirri» unisce ricerca storica rigorosa e fotografia d\'autore per raccontare i tesori architettonici e artistici di Pirri, l\'antico borgo alle porte di Cagliari.'),
+          E('p',{key:'p2'},'240 pagine di testi approfonditi e fotografie inedite sulla scoperta di ville nobiliari, case campidanesi, chiese e palazzi borghesi che custodiscono secoli di storia sarda.'),
+        ]),
+        E('div',{key:'vis'},[
+          E('div',{className:'book-3d'},[
+            E('div',{className:'book-inner'},[
+              E('div',{key:'art',className:'book-art'},E(ArchSVG)),
+              E('div',{key:'t',className:'book-cover-title'},'Innamorarsi\ndi Pirri'),
+              E('div',{key:'s',className:'book-cover-sub'},'Bellezze d\'architettura e d\'arte'),
+            ])
+          ]),
+        ]),
+      ]),
+    ]),
+
+    E('section',{key:'chapters',className:'chapters'},[
+      E('div',{className:'chapters-inner'},[
+        E('div',{key:'hd',className:'ch-hd'},[
+          E(Label,{key:'lb'},'Contenuti'),
+          E('h2',{key:'h'},'Sei capitoli, secoli di storia'),
+          E('p',{key:'p'},'Un percorso attraverso l\'identità architettonica e artistica di Pirri.'),
+        ]),
+        E('div',{key:'grid',className:'ch-grid'},
+          CHDARK.map((c,i)=>E('div',{key:i,className:'ch-card'+(c.accent?' accent':'')},
+            [E('div',{key:'bg',className:'ch-bg-num'},c.n),
+             E('div',{key:'n',className:'ch-num'},'Cap. '+c.n),
+             E('div',{key:'t',className:'ch-title'},c.title),
+             E('div',{key:'d',className:'ch-desc'},c.desc)]
+          ))
+        ),
+      ]),
+    ]),
+
+    E(Gallery,{key:'gallery'}),
+
+    E('section',{key:'authors',style:{padding:'5rem 2.5rem',background:'var(--light)'}},[
+      E('div',{className:'authors-sec',style:{padding:0}},[
+        E(Label,{key:'lb'},'Le Autrici'),
+        E('div',{key:'grid',className:'authors-grid'},[
+          E('div',{key:'a1'},[
+            E('div',{key:'r',className:'auth-role'},'Testo e ricerca storica'),
+            E('div',{key:'av',className:'auth-avatar av1'},'MR'),
+            E('h3',{key:'n',className:'auth-name'},'Maria Rosaria Lai'),
+            E('p',{key:'b',className:'auth-bio'},'Storica e scrittrice che ha condotto approfondita ricerca negli archivi comunali e statali di Cagliari per ricostruire la storia architettonica e sociale di Pirri.'),
+          ]),
+          E('div',{key:'div',className:'auth-divider'}),
+          E('div',{key:'a2'},[
+            E('div',{key:'r',className:'auth-role'},'Fotografia e cura visiva'),
+            E('div',{key:'av',className:'auth-avatar av2'},'ML'),
+            E('h3',{key:'n',className:'auth-name'},'Marcella Lai'),
+            E('p',{key:'b',className:'auth-bio'},'Fotografa e curatrice che ha documentato con sensibilità e tecnica il patrimonio architettonico di Pirri catturando luce, materia e tempo.'),
+          ]),
+        ]),
+      ]),
+    ]),
+
+    E('section',{key:'shop',className:'shop-sec',ref:shopRef},[
+      E('div',{className:'shop-inner'},[
+        E('div',{key:'l',className:'shop-left'},[
+          E(Label,{key:'lb',light:true},'Acquista il libro'),
+          E('h2',{key:'h'},[
+            'Portalo ',E('em',{key:'em'},'con te'),', ovunque'
+          ]),
+          E('p',{key:'d',className:'shop-desc'},'Disponibile in versione digitale ad alta risoluzione. Acquista una volta, scarica subito.'),
+          E('ul',{key:'feats',className:'shop-feats'},[
+            '240 pagine in PDF ad alta definizione',
+            'Fotografie originali in qualità editoriale',
+            'Testi storici con fonti d\'archivio',
+            'Download immediato',
+            'Lettura su tutti i dispositivi',
+            'ISBN: 979 12 80117 00 7',
+          ].map((f,i)=>E('li',{key:i},f))),
+        ]),
+        E('div',{key:'r',className:'shop-card'},[
+          E('div',{key:'price'},[
+            E('div',{key:'pr',className:'price-row'},[
+              E('span',{key:'c',className:'price-curr'},'€'),
+              E('span',{key:'a',className:'price-amt'},'18'),
+            ]),
+            E('p',{key:'pn',className:'price-note'},'Edizione digitale PDF'),
+          ]),
+          E(CheckoutForm,{key:'form',onSuccess:()=>setPurchased(true)}),
+        ]),
+      ]),
+    ]),
+
+    E('footer',{key:'footer'},[
+      E('div',{key:'l',className:'footer-l'},[
+        E('div',{key:'t',className:'footer-logo'},'Innamorarsi di Pirri'),
+        E('div',{key:'c'},'© 2020 Maria Rosaria Lai — Marcella Lai'),
+        E('div',{key:'e'},'Edizioni Domus de Janas · Sestu (CA)'),
+      ]),
+      E('div',{key:'r',className:'footer-r'},[
+        E('div',{key:'t'},'Bellezze d\'architettura e d\'arte'),
+        E('div',{key:'c'},'Collana della Memoria · Prima edizione 2020'),
+      ]),
+    ]),
+  ])
+}
+
+const root=ReactDOM.createRoot(document.getElementById('root'))
+root.render(E(App))
+</script>
+
+</body>
+</html>
